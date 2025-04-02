@@ -1,23 +1,121 @@
-# EjercicioAPI
-API de Gestión de incidentes (tickets)
+# API de Incidentes con Golang, MongoDB y Gorilla Mux
 
-# API de Gestión de Incidentes
+Este proyecto es una API REST que permite gestionar reportes de incidentes (computadoras, impresoras, redes, etc.) mediante operaciones CRUD. La API está desarrollada en Go, utiliza MongoDB para el almacenamiento y Gorilla Mux para el ruteo de las solicitudes HTTP.
 
-API para reportar y gestionar incidentes técnicos
+## Índice
 
-# Requisitos
-- Go 1.16+
-- Echo
+- [Requisitos Previos](#requisitos-previos)
+- [Instalación y Configuración](#instalación-y-configuración)
+  - [1. Instalar Go](#1-instalar-go)
+  - [2. Instalar MongoDB](#2-instalar-mongodb)
+  - [3. Clonar el Repositorio](#3-clonar-el-repositorio)
+  - [4. Configurar el Proyecto](#4-configurar-el-proyecto)
+- [Ejecutar la API](#ejecutar-la-api)
+- [Insertar Datos de Prueba en MongoDB](#insertar-datos-de-prueba-en-mongodb)
+- [Ejemplos de Uso](#ejemplos-de-uso)
+- [Recursos Adicionales](#recursos-adicionales)
 
-# Aclaración
-Debido a que estoy usando tecnologías que no conocía tengo muchos archivos y carpetas siguiendo los tutoriales de dichas tecnologías, pero para probar el api sencilla con POST y GET se hace lo siguiente
+## Requisitos Previos
 
-## Instalación
-1. Clonar repositorio
-2. Entrar en la carpeta 'cmd' y luego en 'api'
-3. Correr el comando 'go run main.go
-4. Opcional: Se puede correr desde la carpeta principal cómo 'go run cmd/api/main.go'
-5. Abril el siguiente enlace: http://localhost:1323
-6. Probar get: 'curl http://localhost:1323/hello'
-7. Probar POST: 'curl -X POST -H "Content-Type: application/json" -d '{"text": "Mensaje de prueba"}' http://localhost:1323/echo'
+Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
+1. **Go**: Lenguaje de programación.
+2. **MongoDB**: Base de datos NoSQL (puedes usar MongoDB Atlas o instalarlo localmente).
+3. **Git**: Para clonar el repositorio.
+
+## Instalación y Configuración
+
+### 1. Instalar Go
+
+- Descarga e instala Go desde [aquí](https://golang.org/dl/).
+- Verifica la instalación con:
+  ```bash
+  go version
+  ```
+
+### 2. Instalar MongoDB
+
+#### Opción A: MongoDB Atlas
+- Regístrate en [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) y crea un clúster.
+- Configura el acceso y usa la siguiente URI de conexión:
+  ```
+  mongodb+srv://JFMG:contraseña123@jfmg.xzezjjy.mongodb.net/?retryWrites=true&w=majority&appName=JFMG
+  ```
+
+#### Opción B: Instalación Local
+- Descarga MongoDB desde [aquí](https://www.mongodb.com/try/download/community) y sigue las instrucciones de instalación.
+
+### 3. Clonar el Repositorio
+
+```bash
+git clone https://github.com/MENENDEZGUERRA/EjercicioAPI.git
+cd EjercicioAPI
+cd cmd
+cd api
+```
+
+### 4. Configurar el Proyecto
+
+1. Inicializa el módulo de Go:
+   ```bash
+   go mod init EjercicioAPI
+   ```
+2. Instala las dependencias:
+   ```bash
+   go get -u github.com/gorilla/mux
+   go get go.mongodb.org/mongo-driver/mongo
+   ```
+
+## Ejecutar la API
+
+```bash
+go run main.go
+```
+
+La API estará disponible en `http://localhost:8000`.
+
+## Recomendación:
+Utilizar la página https://www.postman.com instalando su cliente local para poder utilizar el lucalhost y de esa manera facilitar el uso de 'GET' 'POST' 'PUT' 'DELETE'
+
+## Insertar Datos de Prueba en MongoDB
+
+```js
+db.incidents.insertMany([
+  { reporter: "Juan Perez", description: "La computadora no enciende.", status: "pendiente", created_at: new Date() },
+  { reporter: "Maria Lopez", description: "La impresora imprime mal.", status: "en proceso", created_at: new Date() },
+  { reporter: "Carlos Sanchez", description: "La red es lenta.", status: "resuelto", created_at: new Date() }
+])
+```
+
+## Ejemplos de Uso
+
+### Crear un Incidente
+```json
+{
+    "reporter": "Juan Perez",
+    "description": "La computadora no enciende."
+}
+```
+
+### Obtener Todos los Incidentes
+```bash
+GET /incidents
+```
+
+### Obtener un Incidente Específico
+```bash
+GET /incidents/{id}
+```
+
+### Actualizar el Estado de un Incidente
+```json
+{
+    "status": "en proceso"
+}
+```
+
+### Eliminar un Incidente
+```bash
+DELETE /incidents/{id}
+```
+ 
