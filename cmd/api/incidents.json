@@ -1,0 +1,20 @@
+[
+    {
+      "reporter": "Juan Perez",
+      "description": "La computadora no enciende correctamente, se observan luces parpadeantes.",
+      "status": "pendiente",
+      "created_at": { "$date": "2025-04-01T15:04:05Z" }
+    },
+    {
+      "reporter": "Maria Lopez",
+      "description": "La impresora imprime garabatos y se detiene en medio del trabajo.",
+      "status": "en proceso",
+      "created_at": { "$date": "2025-04-02T10:20:30Z" }
+    },
+    {
+      "reporter": "Carlos Sanchez",
+      "description": "La conexión a la red es muy lenta y se desconecta varias veces.",
+      "status": "resuelto",
+      "created_at": { "$date": "2025-04-03T08:15:00Z" }
+    }
+  ]  
