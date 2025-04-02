@@ -15,7 +15,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// Incident representa la estructura de un incidente.
 type Incident struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Reporter    string             `bson:"reporter" json:"reporter"`
@@ -28,7 +27,6 @@ var client *mongo.Client
 var incidentCollection *mongo.Collection
 
 func main() {
-	// Conectar a MongoDB con las credenciales proporcionadas.
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	clientOptions := options.Client().ApplyURI("mongodb+srv://JFMG:contraseña123@jfmg.xzezjjy.mongodb.net/?retryWrites=true&w=majority&appName=JFMG")
@@ -44,7 +42,6 @@ func main() {
 	}
 	fmt.Println("Conectado a MongoDB")
 
-	// Seleccionar la base de datos y colección
 	incidentCollection = client.Database("incidentDB").Collection("incidents")
 
 	// Configurar el router y las rutas
@@ -61,7 +58,6 @@ func main() {
 }
 
 // createIncident crea un nuevo incidente.
-// Validaciones: reporter obligatorio y descripción de al menos 10 caracteres.
 func createIncident(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var incident Incident
@@ -78,7 +74,7 @@ func createIncident(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "La descripción debe tener al menos 10 caracteres", http.StatusBadRequest)
 		return
 	}
-	// Asignar valores por defecto
+
 	incident.Status = "pendiente"
 	incident.CreatedAt = time.Now()
 
@@ -94,7 +90,7 @@ func createIncident(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(incident)
 }
 
-// getIncidents obtiene la lista de todos los incidentes.
+// getIncidents obtiene la lista de todos los incidentes. -- GET
 func getIncidents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var incidents []Incident
@@ -115,7 +111,7 @@ func getIncidents(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(incidents)
 }
 
-// getIncident obtiene un incidente específico por ID.
+// getIncident obtiene un incidente específico por ID. -- GET/{id}
 func getIncident(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
@@ -181,7 +177,7 @@ func updateIncident(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(bson.M{"message": "Incidente actualizado exitosamente"})
 }
 
-// deleteIncident elimina un incidente por ID.
+// deleteIncident elimina un incidente por ID. -- DELETE
 func deleteIncident(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
