@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>👻👻👻 Gestor de Incidentes 👻👻👻</h1>
+        
+        <!-- Formulario de creación -->
+        <form class="create-form" action="/create" method="POST">
+            <h2>Reportar Nuevo Incidente</h2>
+            <input type="text" name="reporter" placeholder="Tu nombre" required>
+            <textarea name="description" placeholder="Descripción detallada (mínimo 10 caracteres)" required></textarea>
+            <button type="submit">Enviar Reporte</button>
+        </form>
+
+        <!-- Listado de incidentes -->
+        <div class="incidents-list">
+            <h2>Incidentes Reportados</h2>
+            
+            {{range .Incidents}}
+            <div class="incident-card {{.Status | toLower}}">
+                <div class="card-header">
+                    <h3>{{.Description}}</h3>
+                    <span class="status">{{.Status}}</span>
+                </div>
+                
+                <div class="card-body">
+                    <p>Reportado por: {{.Reporter}}</p>
+                    <p>Fecha: {{.CreatedAt.Format "02/01/2006 15:04"}}</p>
+                    
+                    <!-- Formulario de actualización -->
+                    <form class="update-form" action="/update/{{.ID.Hex}}" method="POST">
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="Pendiente" {{if eq .Status "Pendiente"}}selected{{end}}>Pendiente</option>
+                            <option value="En Progreso" {{if eq .Status "En Progreso"}}selected{{end}}>En Progreso</option>
+                            <option value="Resuelto" {{if eq .Status "Resuelto"}}selected{{end}}>Resuelto</option>
+                        </select>
+                    </form>
+                    
+                    <!-- Formulario de eliminación -->
+                    <form class="delete-form" action="/delete/{{.ID.Hex}}" method="POST">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</body>
+</html>
